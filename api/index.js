@@ -20,10 +20,14 @@
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
 const { PORT } = process.env;
+const { fetchCountries } = require("./src/utils");
 
 // Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
-  server.listen(PORT, () => {
-    console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
+conn
+  .sync({ force: true })
+  .then(() => fetchCountries())
+  .then(() => {
+    server.listen(PORT, () => {
+      console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
+    });
   });
-});
