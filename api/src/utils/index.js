@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
-const { Country } = require("../db");
+const { Country, Activity } = require("../db");
+const { activities } = require("./dummyActivity");
 
 const fetchCountries = async () => {
   try {
@@ -15,7 +16,11 @@ const fetchCountries = async () => {
       area: country.area,
       population: country.population,
     }));
-    await Country.bulkCreate(countries);
+    for (let index = 0; index < 8; index++) {
+      const country = countries[index];
+      country.activities = activities.slice(2 * index, 2 * (index + 1));
+    }
+    await Country.bulkCreate(countries, { include: [Activity] });
     console.log("%s Countries loaded successfully!!");
   } catch (error) {
     console.error(`%s Error fetching countries:
