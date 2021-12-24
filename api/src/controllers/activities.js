@@ -2,9 +2,8 @@ const { Activity } = require("../db");
 
 const getActivities = async (req, res, next) => {
   try {
-    const activities = await Activity.findAll();
-    const count = activities.length;
-    res.json({ count, activities });
+    const { count, rows } = await Activity.findAndCountAll();
+    res.json({ count, rows });
   } catch (error) {
     next(error);
   }
