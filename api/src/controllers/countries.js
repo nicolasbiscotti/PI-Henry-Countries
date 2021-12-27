@@ -4,8 +4,8 @@ const COUNTRIES_PER_PAGE = 10;
 
 const getCountries = async (req, res, next) => {
   const condition = {};
-  const page = req.query.page || 1;
-  const filters = req.body || {};
+  const page = req.query.page ? Number.parseInt(req.query.page, 10) : 1;
+  const filters = req.query;
 
   condition.offset = COUNTRIES_PER_PAGE * (page - 1);
   condition.limit = COUNTRIES_PER_PAGE;
@@ -34,7 +34,7 @@ const getCountries = async (req, res, next) => {
   condition.where = where;
   condition.include = include;
 
-  condition.order = filters.order ? [filters.order] : [];
+  condition.order = filters.order ? [filters.order.split("-")] : [];
 
   try {
     const { count, rows } = await Country.findAndCountAll(condition);
