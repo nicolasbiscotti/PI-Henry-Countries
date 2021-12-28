@@ -8,7 +8,7 @@ export default function OrderOptions() {
 
   const handleOnChangeOreder = (e) => {
     const newFilters = { ...filters, order: e.target.value };
-    dispatch(setFilters({ type: "order", value: e.target.value }));
+    dispatch(setFilters(newFilters));
     dispatch(fetchCountries({ filters: newFilters }));
   };
 

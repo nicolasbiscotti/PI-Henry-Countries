@@ -28,7 +28,6 @@ export function fetchCountries(options) {
   for (const key in filters) {
     url += `&${key}=${filters[key]}`;
   }
-  console.log(url);
   return async function (dispatch) {
     dispatch(loading());
     try {
@@ -40,9 +39,9 @@ export function fetchCountries(options) {
   };
 }
 
-export function setFilters(filter) {
+export function setFilters(filters) {
   return {
     type: SET_FILTERS,
-    payload: filter,
+    payload: filters,
   };
 }
