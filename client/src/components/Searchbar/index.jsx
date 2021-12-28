@@ -11,7 +11,7 @@ export default function Searchbar() {
 
   const handleOnChangeName = (e) => {
     setName(e.target.value);
-    dispatch(setFilters({ type: "name", value: e.target.value }));
+    dispatch(setFilters({ ...filters, name: e.target.value }));
   };
 
   const handleOnSubmit = (e) => {

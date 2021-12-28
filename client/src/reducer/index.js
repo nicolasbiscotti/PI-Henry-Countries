@@ -26,10 +26,7 @@ export default function rootReducer(state = initialState, action) {
     case SET_FILTERS:
       return {
         ...state,
-        filters: {
-          ...state.filters,
-          [action.payload.type]: action.payload.value,
-        },
+        filters: action.payload,
       };
 
     default:
