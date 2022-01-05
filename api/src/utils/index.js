@@ -1,18 +1,22 @@
 const { Country, Activity } = require("../db");
 const activities = require("./dummyActivity.json");
 const countries = require("./dummyCountries.json");
-const fs = require("fs");
 
 const fetchCountries = async () => {
   try {
-    console.log("%s Loading countries...");
+    console.log("%s Loading activities...");
+    const loadedActivities = await Activity.bulkCreate(activities);
 
     for (let index = 0; index < 8; index++) {
-      const country = countries[index];
-      country.activities = activities.slice(2 * index, 2 * (index + 1));
+      const country = await Country.create(countries[index]);
+      await country.addActivities(
+        loadedActivities.slice((2 * index) % 8, ((2 * index) % 8) + 2)
+      );
     }
-    await Country.bulkCreate(countries, { include: [Activity] });
-    console.log("%s Countries loaded successfully!!");
+
+    console.log("%s Loading countries...");
+    await Country.bulkCreate(countries.slice(8));
+    console.log("%s Activities and Countries loaded successfully!!");
   } catch (error) {
     console.error(`%s Error fetching countries:
     ${error}`);
