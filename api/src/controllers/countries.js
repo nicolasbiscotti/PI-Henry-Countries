@@ -50,6 +50,7 @@ const getCountries = async (req, res, next) => {
       ["continent", "value"],
       [conn.fn("count", conn.col("id")), "count"],
     ],
+    where: { ...condition.where },
     group: ["continent"],
   };
 
@@ -59,6 +60,7 @@ const getCountries = async (req, res, next) => {
       {
         model: Country,
         attributes: ["countryId", "name"],
+        where: { ...condition.where },
         through: { attributes: [] },
       },
     ],

@@ -43,10 +43,46 @@ GROUP BY activity_name;
 -- });
 
 /******************************************************************************
-  
+  Obtener un listado de todos los coninentes y cuantos paises petenecen 
+  a cada uno, cuando se filtra paises por su nombre.
 ******************************************************************************/
-
-
+SELECT
+continent, count(id) countries
+FROM countries
+WHERE name ilike '%ar%'  
+GROUP BY continent;
+-- Sequelize
+-- const continents = Country.findAll({
+--   attributes: [
+--     ["continent", "name"],
+--     ["continent", "value"],
+--     [conn.fn("count", conn.col("id")), "count"],
+--   ],
+--   where: { name: { [Op.iLike]: '%ar%' } },
+--   group: ["continent"],
+-- });
+/******************************************************************************
+  Obtener un listado de todas las actividades junto a la cantidad de paises 
+  en lo que se pueden llevar a cabo, cuando los paises son filtrados 
+  por nombre.
+******************************************************************************/
+SELECT a.name name, a.id value, count(ca."countryId") count
+FROM activities a 
+INNER JOIN country_activity ca 
+ON ca."activityId" = a.id 
+INNER JOIN countries c 
+ON c.id = ca."countryId" WHERE c.name ilike '%z%'
+GROUP BY a.id;
+-- Sequelize
+-- const activities = await Activity.findAll({
+--   attributes: ["name", "id"],
+--   include: [{
+--     model: Country,
+--     attributes: ["countryId", "name"],
+--     where: { name: { [Op.iLike]: '%z%' } },    
+--     through: {attributes: []},
+--   }],
+-- });
 
 
 
