@@ -55,15 +55,20 @@ const getCountries = async (req, res, next) => {
   };
 
   const groupByActivityName = {
-    attributes: ["name", "id"],
+    attributes: [
+      "name",
+      ["id", "value"],
+      [conn.fn("count", conn.col("countries.id")), "count"],
+    ],
     include: [
       {
         model: Country,
-        attributes: ["countryId", "name"],
+        attributes: [],
         where: { ...condition.where },
         through: { attributes: [] },
       },
     ],
+    group: ["activity.id"],
   };
 
   try {
@@ -71,11 +76,7 @@ const getCountries = async (req, res, next) => {
     const continents = await Country.findAll(groupByContinent);
     const activities = await Activity.findAll(groupByActivityName);
     res.json({
-      activities: activities.map((activity) => ({
-        name: activity.name,
-        value: activity.id,
-        count: activity.countries.length,
-      })),
+      activities,
       continents,
       page,
       totalPages: Math.ceil(count / COUNTRIES_PER_PAGE),

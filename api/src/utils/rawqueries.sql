@@ -64,7 +64,7 @@ GROUP BY continent;
 /******************************************************************************
   Obtener un listado de todas las actividades junto a la cantidad de paises 
   en lo que se pueden llevar a cabo, cuando los paises son filtrados 
-  por nombre.
+  por nombre, por continente o por actividad.
 ******************************************************************************/
 SELECT a.name name, a.id value, count(ca."countryId") count
 FROM activities a 
@@ -75,13 +75,20 @@ ON c.id = ca."countryId" WHERE c.name ilike '%z%'
 GROUP BY a.id;
 -- Sequelize
 -- const activities = await Activity.findAll({
---   attributes: ["name", "id"],
---   include: [{
---     model: Country,
---     attributes: ["countryId", "name"],
---     where: { name: { [Op.iLike]: '%z%' } },    
---     through: {attributes: []},
---   }],
+--   attributes: [
+--     "name",
+--     ["id", "value"],
+--     [conn.fn("count", conn.col("countries.id")), "count"],
+--   ],
+--   include: [
+--     {
+--       model: Country,
+--       attributes: [], ---> THIS IS VERY IMPORTANT!!
+--       where: { ...condition.where },
+--       through: { attributes: [] }, ---> SO VERY VERY IMPORTANT!!
+--     },
+--   ],
+--   group: ["activity.id"],
 -- });
 
 
