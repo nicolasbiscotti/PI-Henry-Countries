@@ -3,7 +3,7 @@ import { fetchCountries, setFilters } from "../../actions";
 import FilterOptionsList from "../FilterOptionsList";
 import { StyledSidebar } from "./styled";
 
-const activities = [
+/* const activities = [
   { name: "Movies", value: 1, count: 2 },
   { name: "Walk into the city", value: 2, count: 2 },
   { name: "Ride into the wild", value: 3, count: 2 },
@@ -19,11 +19,13 @@ const continents = [
   { name: "North America", value: "North America", count: 4 },
   { name: "Africa", value: "Africa", count: 10 },
   { name: "South America", value: "South America", count: 6 },
-];
+]; */
 
 export default function Sidebar() {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
+  const continents = useSelector((state) => state.continents);
+  const activities = useSelector((state) => state.activities);
 
   const handleOnUncheckFilter = (e) => {
     const newFilters = {
