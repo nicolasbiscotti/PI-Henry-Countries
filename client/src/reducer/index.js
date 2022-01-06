@@ -6,6 +6,8 @@ const initialState = {
   page: 1,
   totalPages: null,
   isLoading: false,
+  continents: [],
+  activities: [],
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -21,6 +23,8 @@ export default function rootReducer(state = initialState, action) {
         countries: action.payload.rows,
         page: action.payload.page,
         totalPages: action.payload.totalPages,
+        continents: action.payload.continents,
+        activities: action.payload.activities,
         isLoading: false,
       };
     case SET_FILTERS:
