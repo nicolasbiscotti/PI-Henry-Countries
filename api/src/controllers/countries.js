@@ -33,13 +33,18 @@ const getCountries = async (req, res, next) => {
   where = filters.continent
     ? { ...where, continent: filters.continent }
     : { ...where };
-
-  let include = [];
-  include = filters.activityId
-    ? [...include, { model: Activity, where: { id: filters.activityId } }]
-    : [...include];
-
   condition.where = where;
+
+  const include = filters.activityId
+    ? [
+        {
+          model: Activity,
+          attributes: ["id", "name", "durationTime", "difficulty", "season"],
+          where: { id: filters.activityId },
+          through: { attributes: [] },
+        },
+      ]
+    : [];
   condition.include = include;
 
   condition.order = filters.order ? [filters.order.split("-")] : [];
@@ -50,31 +55,50 @@ const getCountries = async (req, res, next) => {
       ["continent", "value"],
       [conn.fn("count", conn.col("id")), "count"],
     ],
+    where: condition.where,
     group: ["continent"],
   };
 
   const groupByActivityName = {
-    attributes: ["name", "id"],
+    attributes: [
+      "name",
+      ["id", "value"],
+      [conn.fn("count", conn.col("countries.id")), "count"],
+    ],
+    where: filters.activityId ? { id: filters.activityId } : {},
     include: [
       {
         model: Country,
-        attributes: ["countryId", "name"],
+        attributes: [],
+        where: { ...condition.where },
         through: { attributes: [] },
       },
     ],
+    group: ["activity.id"],
   };
 
   try {
     const { count, rows } = await Country.findAndCountAll(condition);
-    const continents = await Country.findAll(groupByContinent);
+    const continents = filters.activityId
+      ? rows.reduce((result, country) => {
+          for (const continent of result) {
+            if (continent.name === country.continent) {
+              continent.count += 1;
+              return result;
+            }
+          }
+          result.push({
+            name: country.continent,
+            value: country.continent,
+            count: 1,
+          });
+          return result;
+        }, [])
+      : await Country.findAll(groupByContinent);
     const activities = await Activity.findAll(groupByActivityName);
     res.json({
-      activities: activities.map((activity) => ({
-        name: activity.name,
-        value: activity.id,
-        count: activity.countries.length,
-      })),
       continents,
+      activities,
       page,
       totalPages: Math.ceil(count / COUNTRIES_PER_PAGE),
       count,

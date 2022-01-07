@@ -29,8 +29,10 @@ function Countries() {
   const dispatch = useDispatch();
   const countries = useSelector((state) => state.countries);
   const isLoading = useSelector((state) => state.isLoading);
+  const filters = useSelector((state) => state.filters);
+  const page = useSelector((state) => state.page);
   useEffect(() => {
-    dispatch(fetchCountries());
+    dispatch(fetchCountries({page, filters}));
   }, []);
   return (
     <div className="countries">
