@@ -4,7 +4,7 @@ export const StyledSidebar = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 4vh 2rem;
   .selectedFilter {
     color: #555;
     font-size: 0.8em;

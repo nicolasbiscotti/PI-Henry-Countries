@@ -31,28 +31,33 @@ function Countries() {
   const isLoading = useSelector((state) => state.isLoading);
   const filters = useSelector((state) => state.filters);
   const page = useSelector((state) => state.page);
+
   useEffect(() => {
-    dispatch(fetchCountries({page, filters}));
+    dispatch(fetchCountries({ page, filters }));
   }, []);
+
   return (
     <div className="countries">
-      <ul className="listWrapper">
-        {isLoading
-          ? "Loading..."
-          : countries.map((country) => {
-              return (
-                <CountryCard
-                  key={country.id}
-                  id={country.id}
-                  flagURI={country.flagURI}
-                  name={country.name}
-                  continent={country.continent}
-                  population={country.population}
-                  countryId={country.countryId}
-                />
-              );
-            })}
-      </ul>
+      {isLoading ? (
+        <div className="spinner"></div>
+      ) : (
+        <ul className="listWrapper">
+          {countries.map((country) => {
+            return (
+              <CountryCard
+                key={country.id}
+                id={country.id}
+                flagURI={country.flagURI}
+                name={country.name}
+                continent={country.continent}
+                population={country.population}
+                countryId={country.countryId}
+              />
+            );
+          })}
+        </ul>
+      )}
+
       <Paginationbar />
     </div>
   );
