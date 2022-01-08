@@ -1,4 +1,9 @@
-import { LOADING, SET_COUNTRIES, SET_FILTERS } from "../actions";
+import {
+  LOADING,
+  SET_COUNTRIES,
+  SET_COUNTRY_DETAIL,
+  SET_FILTERS,
+} from "../actions";
 
 const initialState = {
   countries: [],
@@ -8,6 +13,7 @@ const initialState = {
   isLoading: false,
   continents: [],
   activities: [],
+  countryDetail: {},
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -31,6 +37,12 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         filters: action.payload,
+      };
+    case SET_COUNTRY_DETAIL:
+      return {
+        ...state,
+        countryDetail: action.payload,
+        isLoading: false,
       };
 
     default:

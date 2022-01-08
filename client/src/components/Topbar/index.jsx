@@ -4,7 +4,7 @@ export default function Topbar() {
   return (
     <StyledTopbar>
       <div className="topbarWrapper">
-        <img src="./images/countries.png" alt="map with countries name" />
+        <img src="images/countries.png" alt="map with countries name" />
         <button>New Activity</button>
       </div>
     </StyledTopbar>

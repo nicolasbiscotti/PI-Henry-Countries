@@ -113,12 +113,12 @@ const getCountryDetail = async (req, res, next) => {
   const { id } = req.params;
   try {
     const country = await Country.findOne({
-      attributes: { exclude: ["createdAt", "updatedAt", "area"] },
+      attributes: { exclude: ["createdAt", "updatedAt"] },
       where: { id },
       include: [
         {
           model: Activity,
-          attributes: { exclude: ["actualizado", "duration"] },
+          attributes: { exclude: ["actualizado"] },
           through: { attributes: [] },
         },
       ],
@@ -126,7 +126,7 @@ const getCountryDetail = async (req, res, next) => {
     if (country) {
       res.json(country);
     } else {
-      res.json({ msg: `No country found with id: ${id}` });
+      res.json({ message: `No country found with id: ${id}` });
     }
   } catch (error) {
     next(error);

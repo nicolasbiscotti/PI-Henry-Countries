@@ -7,6 +7,7 @@ axios.defaults.baseURL = process.env.REACT_APP_API;
 export const LOADING = "LOADING";
 export const SET_COUNTRIES = "SET_COUNTRIES";
 export const SET_FILTERS = "SET_FILTERS";
+export const SET_COUNTRY_DETAIL = "SET_COUNTRY_DETAIL";
 
 export function loading() {
   return {
@@ -43,5 +44,24 @@ export function setFilters(filters) {
   return {
     type: SET_FILTERS,
     payload: filters,
+  };
+}
+
+export function setCountryDetail(countryDetail) {
+  return {
+    type: SET_COUNTRY_DETAIL,
+    payload: countryDetail,
+  };
+}
+
+export function fetchCountryDetail(id) {
+  return async function (dispatch) {
+    dispatch(loading());
+    try {
+      const response = await axios.get(`countries/${id}`);
+      dispatch(setCountryDetail(response.data));
+    } catch (error) {
+      console.error(error);
+    }
   };
 }
