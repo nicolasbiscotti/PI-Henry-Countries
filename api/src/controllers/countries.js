@@ -133,4 +133,15 @@ const getCountryDetail = async (req, res, next) => {
   }
 };
 
-module.exports = { getCountries, getCountryDetail };
+const getCountriesIdAndName = async (req, res, next) => {
+  try {
+    const countries = await Country.findAll({
+      attributes: ["id", "name"],
+    });
+    res.json(countries);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { getCountries, getCountryDetail, getCountriesIdAndName };

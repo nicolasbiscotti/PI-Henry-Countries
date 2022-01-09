@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
 export const StyledCountryDetail = styled.div`
-  height: 91vh;
   .countryDetailWrapper {
     display: flex;
-    min-height: 100%;
+    min-height: 91vh;
     .countryWapper {
       flex: 1;
       display: flex;
