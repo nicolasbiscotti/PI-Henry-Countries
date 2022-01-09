@@ -16,5 +16,10 @@ export const StyledTopbar = styled.div`
       border-radius: 50px;
       background-color: white;
     }
+    a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+    }
   }
 `;

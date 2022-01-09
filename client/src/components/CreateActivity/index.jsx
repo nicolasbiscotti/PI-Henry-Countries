@@ -1,5 +1,9 @@
+import Topbar from "../Topbar";
 import { StyledCreateActivity } from "./styled";
 
 export default function CreateActivity() {
-  return <StyledCreateActivity>Create Activity</StyledCreateActivity>;
+  return <StyledCreateActivity>
+    <Topbar />
+    
+  </StyledCreateActivity>;
 }
