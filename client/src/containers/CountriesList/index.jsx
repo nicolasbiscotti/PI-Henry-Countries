@@ -6,6 +6,7 @@ import OrderOptions from "../../components/OrderOptions";
 import Paginationbar from "../../components/Paginationbar/";
 import Searchbar from "../../components/Searchbar";
 import Sidebar from "../../components/Sidebar";
+import Spinner from "../../components/Spinner";
 import { StyledCountriesList } from "./styledCountriesList";
 
 export default function CountriesList() {
@@ -39,7 +40,7 @@ function Countries() {
   return (
     <div className="countries">
       {isLoading ? (
-        <div className="spinner"></div>
+        <Spinner />
       ) : (
         <ul className="listWrapper">
           {countries.map((country) => {
