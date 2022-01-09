@@ -13,23 +13,6 @@ export const StyledCountriesList = styled.div`
     display: flex;
     .countries {
       flex: 4;
-      .spinner {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        border: solid red;
-        border-width: 0px 3px 0px 0px;
-        animation: spinner 1s infinite;
-        animation-timing-function: linear;
-      }
-      @keyframes spinner {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(359deg);
-        }
-      }
       .listWrapper {
         list-style: none;
         margin: 0;
