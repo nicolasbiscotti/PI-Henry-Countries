@@ -24,7 +24,7 @@ const { fetchCountries } = require("./src/utils");
 
 // Syncing all the models at once.
 conn
-  .sync({ force: true })
+  .sync({ force: false })
   .then(() => fetchCountries())
   .then(() => {
     server.listen(PORT, () => {
