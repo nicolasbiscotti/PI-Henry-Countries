@@ -7,7 +7,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import dotenv from "dotenv";
 import { store } from "./store";
+import axios from "axios";
 dotenv.config();
+
+axios.defaults.baseURL = process.env.REACT_APP_API;
 
 ReactDOM.render(
   <React.StrictMode>
