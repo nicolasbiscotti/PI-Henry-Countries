@@ -5,8 +5,13 @@ export const StyledCountryCard = styled.li`
   background-color: white;
   border-radius: 10px;
   cursor: pointer;
-  -webkit-box-shadow: 1px 4px 9px -2px #535353;
-  box-shadow: 1px 4px 9px -2px #535353;
+  -webkit-box-shadow: 1px 2px 4px -2px #535353;
+  box-shadow: 1px 2px 4px -2px #535353;
+  transition: box-shadow 0.5s, -webkit-box-shadow 0.5s;
+  &:hover {
+    -webkit-box-shadow: 1px 4px 6px -2px #535353;
+    box-shadow: 1px 4px 6px -2px #535353;
+  }
   .countryCardWrapper {
     display: flex;
     justify-content: space-around;
@@ -19,6 +24,7 @@ export const StyledCountryCard = styled.li`
       border-radius: 50%;
       margin-right: 1.5rem;
       object-fit: cover;
+      transition: width 2s, height 2s;
     }
   }
 `;
