@@ -13,6 +13,7 @@ export const StyledCountriesList = styled.div`
     display: flex;
     .countries {
       flex: 4;
+      min-height: 88vh;
       .listWrapper {
         list-style: none;
         margin: 0;
