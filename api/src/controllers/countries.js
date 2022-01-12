@@ -137,6 +137,7 @@ const getCountriesIdAndName = async (req, res, next) => {
   try {
     const countries = await Country.findAll({
       attributes: ["id", "name"],
+      order: [["name", "ASC"]],
     });
     res.json(countries);
   } catch (error) {

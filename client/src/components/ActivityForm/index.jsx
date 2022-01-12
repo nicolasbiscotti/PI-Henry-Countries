@@ -8,7 +8,7 @@ export default function ActivityForm() {
 
   useEffect(() => {
     async function fetchCountries() {
-      const response = await axios.get("http://localhost:3001/countries/list");
+      const response = await axios.get("/countries/list");
       setCountriesList(() => response.data);
     }
     fetchCountries();
@@ -29,24 +29,24 @@ export default function ActivityForm() {
   const [errors, setError] = useState({});
   const [disabled, setDisabled] = useState(true);
 
-  const validate = (input) => {
+  const validate = (activity) => {
     const errors = {};
-    if (!input.name) {
+    if (!activity.name) {
       errors.name = "Activity name is required";
     }
     if (
-      Number.parseInt(input.duration) < 15 ||
-      Number.parseInt(input.duration) > 240
+      Number.parseInt(activity.duration) < 15 ||
+      Number.parseInt(activity.duration) > 240
     ) {
       errors.duration = "Duration is invalid";
     }
-    if (!input.difficulty) {
+    if (!activity.difficulty) {
       errors.difficulty = "Difficulty is required";
     }
-    if (!input.season) {
+    if (!activity.season) {
       errors.season = "Season is invalid";
     }
-    if (!input.countriesId.length) {
+    if (!activity.countriesId.length) {
       errors.countriesId = "No countries selected";
     }
     return errors;
@@ -60,43 +60,43 @@ export default function ActivityForm() {
   };
 
   const activityHandler = (e) => {
-    let input = {};
     setActivity((activity) => {
-      input = {
+      const input = {
         ...activity,
         [e.target.name]: e.target.value,
       };
+      setError(() => validate(input));
+      setDisabled(() => disableCreateButton(input));
       return input;
     });
-    setError((errors) => {
-      let res = {
-        ...errors,
-        [e.target.name]: validate(input)[e.target.name],
-      };
-      return res;
-    });
-    setDisabled(() => disableCreateButton(input));
   };
 
   const addCountry = (e) => {
     setActivity((activity) => {
       // to avoid repetitions
-      return activity.countriesId.indexOf(e.target.value) >= 0
-        ? { ...activity }
-        : {
-            ...activity,
-            countriesId: [...activity.countriesId, e.target.value],
-          };
+      const input =
+        activity.countriesId.indexOf(e.target.value) >= 0
+          ? { ...activity }
+          : {
+              ...activity,
+              countriesId: [...activity.countriesId, e.target.value],
+            };
+      setError(() => validate(input));
+      setDisabled(() => disableCreateButton(input));
+      return input;
     });
   };
   const removeCountry = (e) => {
     setActivity((activity) => {
-      return {
+      const input = {
         ...activity,
         countriesId: activity.countriesId.filter(
           (c) => c !== e.target.dataset.value
         ),
       };
+      setError(() => validate(input));
+      setDisabled(() => disableCreateButton(input));
+      return input;
     });
   };
 
@@ -107,7 +107,7 @@ export default function ActivityForm() {
 
   const onSubmit = () => {
     axios
-      .post("http://localhost:3001/activities", activity)
+      .post("/activities", activity)
       .then((r) => r.data)
       .then((d) => console.log(d));
   };
@@ -117,7 +117,7 @@ export default function ActivityForm() {
       <form action="" className="activityForm">
         <h2>Create an Activity</h2>
         <section>
-          <div className="field-set">
+          <div className="fieldSet">
             <label htmlFor="name">Activity name:</label>
             <input
               onChange={(e) => activityHandler(e)}
@@ -135,7 +135,7 @@ export default function ActivityForm() {
               {errors.name}
             </label>
           </div>
-          <div className="field-set">
+          <div className="fieldSet">
             <label htmlFor="minutes">Activity duration:</label>
             <input
               onChange={(e) => activityHandler(e)}
@@ -197,7 +197,7 @@ export default function ActivityForm() {
         </section>
 
         <section>
-          <div className="field-set">
+          <div className="fieldSet">
             <select onChange={(e) => addCountry(e)} name="country" id="country">
               <option key="c-0" value="">
                 --Please choose one or more countries--
@@ -209,11 +209,11 @@ export default function ActivityForm() {
               ))}
             </select>
           </div>
-          <div className="field-set">
+          <div className="fieldSet">
             {activity.countriesId.map((country) => (
               <span
                 onClick={(e) => removeCountry(e)}
-                className="selected-countries"
+                className="selectedCountries"
                 key={country}
                 name={country}
                 data-value={country}
@@ -222,13 +222,13 @@ export default function ActivityForm() {
                   countriesList.find((c) => c.id === Number.parseInt(country))
                     .name
                 }{" "}
-                X
+                x
               </span>
             ))}
           </div>
         </section>
 
-        <section>
+        <section className="formFooter">
           <p>
             <button type="reset" onClick={resetHandler}>
               Reset
