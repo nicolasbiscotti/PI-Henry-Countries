@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  api:
+    image: node:14-alpine
+    command: sh -c "yarn install && yarn start"
+    ports:
+      - 3001:3001
+    working_dir: /api
+    volumes:
+      - ./:/api
+
+  postgres:
+    image: postgres
+    volumes:
+      - henry-countries-data:/var/lib/postgresql
+    environment:
+      POSTGRES_PASSWORD: Post25gres08
+      POSTGRES_DB: henry_countries
+
+volumes:
+  henry-countries-data:
