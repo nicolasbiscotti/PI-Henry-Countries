@@ -19,15 +19,28 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require("./src/app.js");
 const { conn } = require("./src/db.js");
-const { PORT } = process.env;
+const waitPort = require("wait-port");
+const { PORT, DB_HOST } = process.env;
 const { loadCountries } = require("./src/utils");
 
-// Syncing all the models at once.
-conn
-  .sync({ force: false })
+// Wait for the postgres service  is ready to go.
+waitPort({ host: DB_HOST, port: 5432, timeout: 1000 * 20 })
+  .then((open) => {
+    return new Promise((resolve, reject) => {
+      if (open) {
+        // Syncing all the models at once.
+        resolve(conn.sync({ force: false }));
+      } else {
+        reject("The port did not open before the timeout...");
+      }
+    });
+  })
   .then(() => loadCountries())
   .then(() => {
     server.listen(PORT, () => {
       console.log(`%s listening at ${PORT}`); // eslint-disable-line no-console
     });
-  });
+  })
+  .catch((err) =>
+    console.log(`An error occured while waiting for the port: ${err}`)
+  );

@@ -8,7 +8,16 @@ services:
       - 3001:3001
     working_dir: /api
     volumes:
-      - ./:/api
+      - ./api:/api
+
+  client:
+    image: node:14-alpine
+    command: sh -c "yarn install && yarn start"
+    ports:
+      - 3000:3000
+    working_dir: /client
+    volumes:
+      - ./client:/client
 
   postgres:
     image: postgres
