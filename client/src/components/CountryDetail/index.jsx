@@ -24,7 +24,7 @@ export default function CountryDetail() {
 
   useEffect(() => {
     dispatch(fetchCountryDetail(id));
-  }, []);
+  }, [dispatch, id]);
 
   return (
     <StyledCountryDetail>

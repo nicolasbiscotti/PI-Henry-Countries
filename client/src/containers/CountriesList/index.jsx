@@ -35,7 +35,7 @@ function Countries() {
 
   useEffect(() => {
     dispatch(fetchCountries({ page, filters }));
-  }, []);
+  }, [dispatch, page, filters]);
 
   return (
     <div className="countries">
